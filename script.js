@@ -4,21 +4,28 @@ let JumboElement = document.querySelector(".jumbotron")
 let switchedTextElement = document.querySelectorAll(".switchText");
 let questionElement = document.querySelector(".question");
 let timeDisplayedElement = document.querySelector(".timeRemaing")
+let revealElement = document.querySelectorAll(".hide");
 
+let optionAElement = document.querySelector("#Answer1");
+let optionBElement = document.querySelector("#Answer2");
+let optionCElement = document.querySelector("#Answer3");
+let optionDElement = document.querySelector("#Answer4");
+
+let questionCount = 0
 
 // Array of objects that will be stringified onto the page 
 const questions = [
     {
-    question: "This is Question 1",
-    optionA: "This is answer one",
-    optionB: "This is answer two",
-    optionC: "This is answer three",
-    optionD: "this is answer four",
-    correctAnswer: this.optionA
+    question: "Inside which HTML element do we put the JavaScript?",
+    optionA: "<Scripting>",
+    optionB: "<js>",
+    optionC: "<javascript",
+    optionD: "<script>",
+    correctAnswer: this.optionD
     },
     {
     question: "This is Question 2",
-    "optionA": "alfadlkfjdslkjf",
+    optionA: "alfadlkfjdslkjf",
     "optionB": "akjalfkjdafkljd",
     "optionC": "aldkfjdklfj",
     "optionD": "aflkjdslfkjsdlkfj",
@@ -50,21 +57,26 @@ const questions = [
     }
 ]
 
-
 //Functions 
 
-//i originally thought this would apply hide to all my items with the class but its not. 
+//function to launch quiz, hide elements, start timer 
 function beginQuiz() {
     for (i = 0; i < switchedTextElement.length; i ++) {
         switchedTextElement[i].classList.add("hide");
     }
-    questionElement.classList.remove("hide")
+    // questionElement.classList.remove("hide")
+
+    for (i = 0; i < revealElement.length; i ++) {
+        revealElement[i].classList.remove("hide");
+    }
+
     //need to create a loop to generate question and buttons from first question array 
     questionElement.textContent = questions[0].question;
-    
-    //being timer on click 
-    countdown(3, 0);      
-}
+    //optionAElement.textContent = questions[0].optionA;
+    countdown(3, 0);
+
+    writeAnswers(0);
+    }     
 
 //function takes in minutes and seconds as arguments 
 function countdown(minutes, seconds) {
@@ -96,6 +108,14 @@ function countdown(minutes, seconds) {
     }, 1000);
 }
 
+//function to write answers to button 
+
+function writeAnswers(i) {
+        optionAElement.textContent = questions[i].optionA;
+        optionBElement.textContent = questions[i].optionB;
+        optionCElement.textContent = questions[i].optionC;
+        optionDElement.textContent = questions[i].optionD;
+}
 
 //Event Listeners 
 

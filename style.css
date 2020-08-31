@@ -14,7 +14,8 @@ header h3 {
 
 .btn {
     color: #F1FAEE;
-    background-color: #1D3557;  
+    background-color: #1D3557; 
+    margin: 5px;
 }
 
 .btn-primary:hover{
@@ -24,3 +25,9 @@ header h3 {
     background-color: #A8DADC;
     color: #28262C;
 }
+
+.questionFormat {
+    display: flex;
+    flex-direction: column;
+}
+
