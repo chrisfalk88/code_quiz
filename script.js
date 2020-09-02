@@ -1,23 +1,28 @@
 //Declaring Variables 
+
+//Main Element Selectors
 let startQuizElement = document.querySelector(".starQuiz");
 let JumboElement = document.querySelector(".jumbotron")
 let switchedTextElement = document.querySelectorAll(".switchText");
 let questionElement = document.querySelector(".question");
 let timeDisplayedElement = document.querySelector(".timeRemaing")
 let revealElement = document.querySelectorAll(".hide");
-
 let questionDivElement = document.querySelector(".questionFormat");
 
-let answerElement = document.querySelector(".answer")
-
+//Question content selectors
 let optionAElement = document.querySelector("#Answer1");
 let optionBElement = document.querySelector("#Answer2");
 let optionCElement = document.querySelector("#Answer3");
 let optionDElement = document.querySelector("#Answer4");
 
+//Varaibles
 let answeredCorrectly = 0;
 let answeredIncorrectly = 0;
-let questionCounterAtStart = 0;
+let questionCount = 0;
+let penaltyTime = -30;
+let wrongAnswer = false;
+let endGame = false;
+let username = "";
 
 // Array of objects that will be stringified onto the page 
 const questions = [
@@ -65,7 +70,7 @@ const questions = [
 
 //Functions 
 
-//function to launch quiz, hide elements, start timer 
+//function to launch quiz:  hide elements, starts timer, writes first question
 function beginQuiz() {
     for (i = 0; i < switchedTextElement.length; i++) {
         switchedTextElement[i].classList.add("hide");
@@ -76,10 +81,11 @@ function beginQuiz() {
 
     //need to create a loop to generate question and buttons from first question array 
     countdown(3, 0);
-    writeContent(questionCounterAtStart);
+    writeContent(questionCount);
 }
 
 //function takes in minutes and seconds as arguments 
+// might need to update this to calcualte penalties for wrong answers
 function countdown(minutes, seconds) {
     // sets time in seconds
     var time = minutes * 60 + seconds;
@@ -88,9 +94,7 @@ function countdown(minutes, seconds) {
         //sets a variable and grabs the timdisplayedelement
         var el = timeDisplayedElement;
         // if the time is 0 then end the counter
-        if (time == 0) {
-            //set up code to move onto displaying the score here 
-            el.innerHTML = "Move on to next date...";
+        if (time == 0 || endGame) {
             //stops timer
             clearInterval(interval);
         }
@@ -105,22 +109,33 @@ function countdown(minutes, seconds) {
         //writes the current time to the HTML doc
         el.textContent = text;
         //decreases the counter by 1
+        if (wrongAnswer) {
+            time = time + penaltyTime;
+            wrongAnswer = false;
+        }
         time--;
     }, 1000);
 }
 
 // function that tests which question we are by array length, then rewrites question and answers to the DOM 
 function writeNextQuestion() {
-    if (questionCounterAtStart < 5) {
-        writeContent(questionCounterAtStart);
+    if (questionCount < 5) {
+        writeContent(questionCount);
     } else {
-        //function to display results goes here 
+        //function to display results goes here
+        endQuiz();
+
     }
 
 }
 
-
-
+function endQuiz() {
+    //removes questions and answers from being displayed 
+    questionElement.classList.add("hide");
+    for (i = 0; i < revealElement.length; i++) {
+        revealElement[i].classList.add("hide");
+    }
+}
 
 function writeContent(i) {
     questionElement.textContent = questions[i].question;
@@ -132,48 +147,24 @@ function writeContent(i) {
 
 //make function called displayResults 
 
-// function checkAnswerClicked(i) {
-//     //inside each, add logic to check against correct answer, add count to answers correct 
-//     optionAElement.addEventListener("click", function () {
-//         if (optionAElement.textContent == questions[i].correctAnswer) {
-//             console.log(true);
 
-//         } else {
-//             console.log(false);
-//         }
-//     });
-//     optionBElement.addEventListener("click", function () {
-//         if (optionBElement.textContent == questions[i].correctAnswer) {
-//             console.log(true);
-//         } else {
-//             console.log(false);
-//         }
-//     });
-//     optionCElement.addEventListener("click", function () {
-//         if (optionCElement.textContent == questions[i].correctAnswer) {
-//             console.log(true);
-
-//         } else {
-//             console.log(false);
-//         }
-//     });
-//     optionDElement.addEventListener("click", function () {
-//         if (optionDElement.textContent == questions[i].correctAnswer) {
-//             console.log(true);
-//         } else {
-//             console.log(false);
-//         }
-//     });
-// }
 //Event Listeners 
 
-questionDivElement.addEventListener("click", function(event) {
+questionDivElement.addEventListener("click", function (event) {
     let element = event.target;
 
     if (element.matches("a") === true) {
         // logic to see if it matches answer here 
         console.log(element.textContent);
-        questionCounterAtStart++;
+        if (element.textContent == questions[questionCount].correctAnswer) {
+            answeredCorrectly++;
+        } else {
+            answeredIncorrectly++;
+            wrongAnswer = true;
+        }
+        questionCount++;
+        console.log("Correctly answered: " + answeredCorrectly);
+        console.log("Incorrectly answered: " + answeredIncorrectly);
         writeNextQuestion();
     }
 })
