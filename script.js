@@ -5,6 +5,8 @@ let JumboElement = document.querySelector(".jumbotron")
 let questionElement = document.querySelector(".question");
 let timeDisplayedElement = document.querySelector(".timeRemaing")
 let possibleAnswersElement = document.querySelector(".possibleAnswers");
+let displayScoreElement = document.querySelector(".displayHighScore");
+let inputElement = document.querySelector("#initalInput");
 
 
 //Displayed Content <div> Selectors 
@@ -80,7 +82,7 @@ function beginQuiz() {
 
     displayInstrucElement.classList.add("hide");
     displayQuizElement.classList.remove("hide");
- 
+
     countdown(3, 0);
     writeContent(questionCount);
 }
@@ -90,12 +92,13 @@ function countdown(minutes, seconds) {
     // sets time in seconds
     let time = minutes * 60 + seconds;
     //sets count down interval function for ever 1000 milisecond
-        interval = setInterval(function () {
+    interval = setInterval(function () {
         //sets a variable and grabs the timdisplayedelement
         let el = timeDisplayedElement;
         // if the time is 0 or end game condition is met then end the counter
         if (time === 0) {
             //stops timer
+            endQuiz();
             clearInterval(interval);
         }
         // takes total number of seconds, divides by 60 to get minutes left, adds 0 if under ten
@@ -124,9 +127,7 @@ function writeNextQuestion() {
     } else {
         //function to display results goes here
         endQuiz();
-
     }
-
 }
 
 //function that launches end game sequence, stops timer, displays score, asks for initials, writes to local storage
@@ -137,14 +138,7 @@ function endQuiz() {
     displayQuizElement.classList.add("hide");
     //reveals HTML with End Game details 
     gameoverResultsElement.classList.remove("hide");
-
-
-    //logic here to save data and initials to local storage 
-
-
-    
-
-    // });
+    displayScoreElement.textContent = answeredCorrectly;
 
 }
 
@@ -159,6 +153,15 @@ function writeContent(i) {
 
 // logic in here to remove text and display welcome text and button again 
 function resetGame() {
+    //hide end game text and display instructions again
+    gameoverResultsElement.classList.add("hide");
+    displayInstrucElement.classList.remove("hide");
+
+    //reset variables 
+    answeredCorrectly = 0;
+    answeredIncorrectly = 0;
+    questionCount = 0;
+    username = "";
 
 }
 //
@@ -190,9 +193,13 @@ startQuizElement.addEventListener("click", function () {
     beginQuiz();
 });
 
-$(document).on("click", "#submitButton", function() {
+$(document).on("click", "#submitButton", function () {
     // log the highscores 
-    // call rewrite function  
+    localStorage.setItem("username", inputElement.value);
+    localStorage.setItem("score", answeredCorrectly);
+
+    // call rewrite function 
+    resetGame(); 
     console.log("clicked");
     let str = $("#initalInput").val();
     console.log(str);
