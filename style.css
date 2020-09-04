@@ -26,7 +26,7 @@ header h3 {
     color: #28262C;
 }
 
-.questionFormat {
+.possibleAnswers {
     display: flex;
     flex-direction: column;
 }

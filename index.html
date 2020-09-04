@@ -25,26 +25,42 @@
 
         <div class="row">
             <div class="jumbotron col-md-12">
-                <h1 class="display-4 switchText">JavaScript Quiz!</h1>
-                <p class="lead switchText">You have 3 minutes to answer a series of questions on JavaScript!</p>
-                <hr class="my-4 switchText">
-                <p class="switchText">Test your knowledge and then log your highscore but be careful as each incorrect
-                    will subtract from your time! </p>
-                <a class="btn btn-primary btn-lg switchText starQuiz" role="button">Start Quiz</a>
+                <div class="displayInstructions">
+                    <h1 class="display-4">JavaScript Quiz!</h1>
+                    <p class="lead">You have 3 minutes to answer a series of questions on JavaScript!</p>
+                    <hr class="my-4">
+                    <p class="lead">Test your knowledge and then log your highscore but be careful as each
+                        incorrect
+                        will subtract from your time! </p>
+                    <a class="btn btn-primary btn-lg startQuiz" role="button">Start Quiz</a>
+                </div>
 
-                <h2 class="question "></h2>
-                <hr class="my-4 hide switchText">
-                <div class="col-md-4 questionFormat">
-                    <a class="btn btn-primary btn-lg hide answer" id="Answer1" role="button">placeholder</a>
-                    <a class="btn btn-primary btn-lg hide answer" id="Answer2" role="button">placeholder</a>
-                    <a class="btn btn-primary btn-lg hide answer" id="Answer3" role="button">placeholder</a>
-                    <a class="btn btn-primary btn-lg hide answer" id="Answer4" role="button">placeholder</a>
+                <div class="hide displayQuiz">
+                    <h2 class="question "></h2>
+                    <hr class="my-4 switchText">
+                    <div class="col-md-4 possibleAnswers">
+                        <a class="btn btn-primary btn-lg answer" id="Answer1" role="button"></a>
+                        <a class="btn btn-primary btn-lg answer" id="Answer2" role="button"></a>
+                        <a class="btn btn-primary btn-lg answer" id="Answer3" role="button"></a>
+                        <a class="btn btn-primary btn-lg answer" id="Answer4" role="button"></a>
+                    </div>
                 </div>
- 
+
+
+                <div class="hide gameover">
+                    <!-- move game over text here. append hide  -->
+                    <h1>GAME OVER</h1>
+                    <!-- figure out to dynamically write this. probably with <span> and Ids and.textContent =  -->
+                    <h2>You scored  + answeredCorrectly + ! </h2>
+                    <h2> Enter your intials to save your Highscore! </h2>
+                    <input id="initalInput"> <a class="btn btn-primary btn-lg" role="button" type="button" id="submitButton">Submit</a>
+
                 </div>
+
             </div>
-
         </div>
+
+    </div>
 
     </div>
 

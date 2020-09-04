@@ -1,15 +1,20 @@
 //Declaring Variables 
 
 //Main Element Selectors
-let startQuizElement = document.querySelector(".starQuiz");
 let JumboElement = document.querySelector(".jumbotron")
-let switchedTextElement = document.querySelectorAll(".switchText");
 let questionElement = document.querySelector(".question");
 let timeDisplayedElement = document.querySelector(".timeRemaing")
-let revealElement = document.querySelectorAll(".hide");
-let questionDivElement = document.querySelector(".questionFormat");
+let possibleAnswersElement = document.querySelector(".possibleAnswers");
 
-//Question content selectors
+
+//Displayed Content <div> Selectors 
+let displayInstrucElement = document.querySelector(".displayInstructions");
+let displayQuizElement = document.querySelector(".displayQuiz");
+let gameoverResultsElement = document.querySelector(".gameover");
+
+// button seletors 
+let startQuizElement = document.querySelector(".startQuiz");
+//Question <a> content selectors
 let optionAElement = document.querySelector("#Answer1");
 let optionBElement = document.querySelector("#Answer2");
 let optionCElement = document.querySelector("#Answer3");
@@ -21,8 +26,8 @@ let answeredIncorrectly = 0;
 let questionCount = 0;
 let penaltyTime = -30;
 let wrongAnswer = false;
-let endGame = false;
 let username = "";
+let interval;
 
 // Array of objects that will be stringified onto the page 
 const questions = [
@@ -72,40 +77,35 @@ const questions = [
 
 //function to launch quiz:  hide elements, starts timer, writes first question
 function beginQuiz() {
-    for (i = 0; i < switchedTextElement.length; i++) {
-        switchedTextElement[i].classList.add("hide");
-    }
-    for (i = 0; i < revealElement.length; i++) {
-        revealElement[i].classList.remove("hide");
-    }
 
-    //need to create a loop to generate question and buttons from first question array 
+    displayInstrucElement.classList.add("hide");
+    displayQuizElement.classList.remove("hide");
+ 
     countdown(3, 0);
     writeContent(questionCount);
 }
 
-//function takes in minutes and seconds as arguments 
-// might need to update this to calcualte penalties for wrong answers
+//timer function takes in minutes and seconds as arguments
 function countdown(minutes, seconds) {
     // sets time in seconds
-    var time = minutes * 60 + seconds;
+    let time = minutes * 60 + seconds;
     //sets count down interval function for ever 1000 milisecond
-    var interval = setInterval(function () {
+        interval = setInterval(function () {
         //sets a variable and grabs the timdisplayedelement
-        var el = timeDisplayedElement;
-        // if the time is 0 then end the counter
-        if (time == 0 || endGame) {
+        let el = timeDisplayedElement;
+        // if the time is 0 or end game condition is met then end the counter
+        if (time === 0) {
             //stops timer
             clearInterval(interval);
         }
         // takes total number of seconds, divides by 60 to get minutes left, adds 0 if under ten
-        var minutes = Math.floor(time / 60);
+        let minutes = Math.floor(time / 60);
         if (minutes < 10) minutes = "0" + minutes;
         // takes total seconds and takes left over of division via modulous to get seconds remaining
-        var seconds = time % 60;
+        let seconds = time % 60;
         if (seconds < 10) seconds = "0" + seconds;
-        //formats the timer nicely 
-        var text = minutes + ':' + seconds;
+        //formats the timer  
+        let text = minutes + ':' + seconds;
         //writes the current time to the HTML doc
         el.textContent = text;
         //decreases the counter by 1
@@ -129,14 +129,26 @@ function writeNextQuestion() {
 
 }
 
+//function that launches end game sequence, stops timer, displays score, asks for initials, writes to local storage
 function endQuiz() {
+    //stops timer when end game condition is met 
+    clearInterval(interval);
     //removes questions and answers from being displayed 
-    questionElement.classList.add("hide");
-    for (i = 0; i < revealElement.length; i++) {
-        revealElement[i].classList.add("hide");
-    }
+    displayQuizElement.classList.add("hide");
+    //reveals HTML with End Game details 
+    gameoverResultsElement.classList.remove("hide");
+
+
+    //logic here to save data and initials to local storage 
+
+
+    
+
+    // });
+
 }
 
+//function that writes array content to HTML elements 
 function writeContent(i) {
     questionElement.textContent = questions[i].question;
     optionAElement.textContent = questions[i].optionA;
@@ -145,18 +157,21 @@ function writeContent(i) {
     optionDElement.textContent = questions[i].optionD;
 }
 
-//make function called displayResults 
+// logic in here to remove text and display welcome text and button again 
+function resetGame() {
 
-
+}
+//
 //Event Listeners 
 
-questionDivElement.addEventListener("click", function (event) {
+//listens for when buttons are clicked inside the jumbotron div and then calculates if its a correct answer
+possibleAnswersElement.addEventListener("click", function (event) {
     let element = event.target;
 
     if (element.matches("a") === true) {
         // logic to see if it matches answer here 
         console.log(element.textContent);
-        if (element.textContent == questions[questionCount].correctAnswer) {
+        if (element.textContent === questions[questionCount].correctAnswer) {
             answeredCorrectly++;
         } else {
             answeredIncorrectly++;
@@ -167,9 +182,18 @@ questionDivElement.addEventListener("click", function (event) {
         console.log("Incorrectly answered: " + answeredIncorrectly);
         writeNextQuestion();
     }
-})
+});
 
+//listens for if the start quiz button is clicked 
 startQuizElement.addEventListener("click", function () {
     event.preventDefault();
     beginQuiz();
+});
+
+$(document).on("click", "#submitButton", function() {
+    // log the highscores 
+    // call rewrite function  
+    console.log("clicked");
+    let str = $("#initalInput").val();
+    console.log(str);
 });
