@@ -15,8 +15,8 @@
 <body>
 
     <header class="d-flex justify-content-between header">
-        <a href="highscore.html">
-            <h3 class="highScores">Highscores</h3>
+        <a class="highScores">
+            <h3>Highscores</h3>
         </a>
         <h3 class="timeRemaing" id="timer">03:00</h3>
     </header>
@@ -31,7 +31,7 @@
                     <hr class="my-4">
                     <p class="lead">Test your knowledge and then log your highscore but be careful as each
                         incorrect
-                        will subtract from your time! </p>
+                        will subtract from your time!</p>
                     <a class="btn btn-primary btn-lg startQuiz" role="button">Start Quiz</a>
                 </div>
 
@@ -54,6 +54,16 @@
                     <h2>You scored <span class="displayHighScore"></span> ! </h2>
                     <h2> Enter your intials to save your Highscore! </h2>
                     <input id="initalInput"> <a class="btn btn-primary btn-lg" role="button" type="button" id="submitButton">Submit</a>
+
+                </div>
+
+                <div class = "hide highscoreDiv">
+                    <h1>HighScores</h1>
+                    <hr>
+                    <div class = "displayScores">
+                    </div>
+                    <a class="btn btn-primary btn-lg" role="button" type="button" id="backButton">Back</a>
+
 
                 </div>
 

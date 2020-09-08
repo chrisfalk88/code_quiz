@@ -7,6 +7,8 @@ let timeDisplayedElement = document.querySelector(".timeRemaing")
 let possibleAnswersElement = document.querySelector(".possibleAnswers");
 let displayScoreElement = document.querySelector(".displayHighScore");
 let inputElement = document.querySelector("#initalInput");
+let highScoreNavElement = document.querySelector(".highScores");
+let highscoreDIvElement = document.querySelector(".highscoreDiv");
 
 
 //Displayed Content <div> Selectors 
@@ -30,7 +32,7 @@ let penaltyTime = -30;
 let wrongAnswer = false;
 let username = "";
 let interval;
-
+let userscore;
 // Array of objects that will be stringified onto the page 
 const questions = [
     {
@@ -140,6 +142,8 @@ function endQuiz() {
     gameoverResultsElement.classList.remove("hide");
     displayScoreElement.textContent = answeredCorrectly;
 
+  
+
 }
 
 //function that writes array content to HTML elements 
@@ -156,6 +160,7 @@ function resetGame() {
     //hide end game text and display instructions again
     gameoverResultsElement.classList.add("hide");
     displayInstrucElement.classList.remove("hide");
+    highscoreDIvElement.classList.add("hide");
 
     //reset variables 
     answeredCorrectly = 0;
@@ -164,12 +169,16 @@ function resetGame() {
     username = "";
 
 }
+
+
 //
+
 //Event Listeners 
 
 //listens for when buttons are clicked inside the jumbotron div and then calculates if its a correct answer
-possibleAnswersElement.addEventListener("click", function (event) {
-    let element = event.target;
+
+$(document).on("click", ".possibleAnswers", function () {
+        let element = event.target;
 
     if (element.matches("a") === true) {
         // logic to see if it matches answer here 
@@ -184,23 +193,49 @@ possibleAnswersElement.addEventListener("click", function (event) {
         console.log("Correctly answered: " + answeredCorrectly);
         console.log("Incorrectly answered: " + answeredIncorrectly);
         writeNextQuestion();
-    }
-});
+}})
 
 //listens for if the start quiz button is clicked 
-startQuizElement.addEventListener("click", function () {
+$(document).on("click", ".startQuiz", function () {
     event.preventDefault();
-    beginQuiz();
+    beginQuiz()
 });
+
 
 $(document).on("click", "#submitButton", function () {
     // log the highscores 
     localStorage.setItem("username", inputElement.value);
     localStorage.setItem("score", answeredCorrectly);
 
-    // call rewrite function 
+    //hides end game results
+    gameoverResultsElement.classList.add("hide");
+
+    //grab from local storage and place in varables 
+    username = localStorage.getItem("username");
+    userscore = localStorage.getItem("score");
+
+    //write local storage to page 
+    $(".displayScores").append("<h1>User Intitals : " + username +"</h1>");
+    $(".displayScores").append("<h1>Score : " + userscore +"</h1><hr>");
+
+    
+    // call rewrite function, restarts game 
     resetGame(); 
-    console.log("clicked");
-    let str = $("#initalInput").val();
-    console.log(str);
 });
+
+//when Highscores is clicked, hides all divs, reveals highscore divs 
+$(".highScores").on("click", function () {
+    clearInterval(interval);
+    gameoverResultsElement.classList.add("hide");
+    highscoreDIvElement.classList.remove("hide");
+    displayInstrucElement.classList.add("hide");
+    displayQuizElement.classList.add("hide");
+
+
+});
+
+$("#backButton").on("click", function () {
+    resetGame();
+})
+
+
