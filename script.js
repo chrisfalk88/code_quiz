@@ -7,17 +7,14 @@ let timeDisplayedElement = document.querySelector(".timeRemaing")
 let possibleAnswersElement = document.querySelector(".possibleAnswers");
 let displayScoreElement = document.querySelector(".displayHighScore");
 let inputElement = document.querySelector("#initalInput");
-let highScoreNavElement = document.querySelector(".highScores");
-let highscoreDIvElement = document.querySelector(".highscoreDiv");
-
 
 //Displayed Content <div> Selectors 
 let displayInstrucElement = document.querySelector(".displayInstructions");
 let displayQuizElement = document.querySelector(".displayQuiz");
 let gameoverResultsElement = document.querySelector(".gameover");
+let highscoreDIvElement = document.querySelector(".highscoreDiv");
 
-// button seletors 
-let startQuizElement = document.querySelector(".startQuiz");
+
 //Question <a> content selectors
 let optionAElement = document.querySelector("#Answer1");
 let optionBElement = document.querySelector("#Answer2");
@@ -33,6 +30,7 @@ let wrongAnswer = false;
 let username = "";
 let interval;
 let userscore;
+
 // Array of objects that will be stringified onto the page 
 const questions = [
     {
@@ -74,6 +72,46 @@ const questions = [
         optionC: "=",
         optionD: "x",
         correctAnswer: "="
+    },
+    {
+        question: "What is the correct way to write a Javascript array?",
+        optionA: "var colors = 1 = (\"red\"), 2 = (\"green\"), 3 = (\"blue\")",
+        optionB: "var colors = \"red\", \"green\", \"blue\"",
+        optionC: "var colors = (1:\"red\", 2:\"green\", 3:\"blue\")",
+        optionD: "var colors = [\"red\", \"green\", \"blue\"]",
+        correctAnswer: "var colors = [\"red\", \"green\", \"blue\"]"
+    },
+    {
+        question: "How do you round the number 7.25, to the nearest integer?",
+        optionA: "Math.round(7.25)",
+        optionB: "Math.rnd(7.25)",
+        optionC: "round(7.25)",
+        optionD: "rnd(7.25)",
+        correctAnswer: "Math.round(7.25)"
+    },
+    {
+        question: "How do you find the number with the highest value of x and y?",
+        optionA: "Math.ceil(x,y)",
+        optionB: "ceil(x,y)",
+        optionC: "Math.max(x,y)",
+        optionD: "top(x,y)",
+        correctAnswer: "Math.max(x,y)"
+    },
+    {
+        question: "Which event occurs when the user clicks on an HTML element?",
+        optionA: "onclick",
+        optionB: "onmouseclick",
+        optionC: "onchange",
+        optionD: "onmouseover",
+        correctAnswer: "onclick"
+    },
+    {
+        question: "What is the correct syntax for referring to an external script called \“geek.js\”?",
+        optionA: "<script src=\”geek.js\”>",
+        optionB: "<script href=\”geek.js\”>",
+        optionC: "<script ref=\”geek.js\”>",
+        optionD: "<script name=\”geek.js\”>",
+        correctAnswer: "<script src=\”geek.js\”>"
     }
 ]
 
@@ -124,7 +162,7 @@ function countdown(minutes, seconds) {
 
 // function that tests which question we are by array length, then rewrites question and answers to the DOM 
 function writeNextQuestion() {
-    if (questionCount < 5) {
+    if (questionCount < 10) {
         writeContent(questionCount);
     } else {
         //function to display results goes here
